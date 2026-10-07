@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- 1. VISION OS / MAC OS DESIGN SYSTEM --- */
+        /* --- 1. VISION OS DESIGN SYSTEM --- */
         :root {
             --bg-color: #f0f0f5;
             --sidebar-bg: rgba(255, 255, 255, 0.4);
@@ -49,100 +49,84 @@
         /* --- CUSTOM MAC SCROLLBARS --- */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { 
-            background: rgba(134, 134, 139, 0.4); 
-            border-radius: 10px; 
-            border: 2px solid transparent; 
-            background-clip: padding-box; 
-        }
+        ::-webkit-scrollbar-thumb { background: rgba(134, 134, 139, 0.4); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(134, 134, 139, 0.7); }
 
         body { 
             background-color: var(--bg-color); 
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(120, 180, 255, 0.25) 0%, transparent 40%),
-                radial-gradient(circle at 90% 30%, rgba(200, 150, 255, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 50% 80%, rgba(150, 220, 255, 0.2) 0%, transparent 50%);
-            background-attachment: fixed;
-            color: var(--text-main); 
+            background-image: radial-gradient(circle at 10% 20%, rgba(120, 180, 255, 0.25) 0%, transparent 40%), radial-gradient(circle at 90% 30%, rgba(200, 150, 255, 0.2) 0%, transparent 40%), radial-gradient(circle at 50% 80%, rgba(150, 220, 255, 0.2) 0%, transparent 50%);
+            background-attachment: fixed; color: var(--text-main); 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden; display: flex;
         }
 
-        [data-theme="dark"] body {
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(40, 80, 150, 0.4) 0%, transparent 40%),
-                radial-gradient(circle at 90% 30%, rgba(80, 40, 120, 0.4) 0%, transparent 40%),
-                radial-gradient(circle at 50% 80%, rgba(20, 100, 150, 0.3) 0%, transparent 50%);
-        }
+        [data-theme="dark"] body { background-image: radial-gradient(circle at 10% 20%, rgba(40, 80, 150, 0.4) 0%, transparent 40%), radial-gradient(circle at 90% 30%, rgba(80, 40, 120, 0.4) 0%, transparent 40%), radial-gradient(circle at 50% 80%, rgba(20, 100, 150, 0.3) 0%, transparent 50%); }
 
         .glass-panel { background: var(--card-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--card-border); box-shadow: var(--shadow-sm); }
 
-        /* --- 2. INITIAL LOADING SCREEN (To prevent flash) --- */
+        /* --- FOCUS MODE (ZEN) --- */
+        /* Όταν μπαίνει η κλάση .focus-active, θολώνουν όλα εκτός από viewer και timer */
+        .sidebar, .top-header, .tasks-widget, .main-container { transition: filter 0.8s ease, opacity 0.8s ease; }
+        body.focus-active .sidebar, body.focus-active .top-header, body.focus-active .tasks-widget, body.focus-active .main-container {
+            opacity: 0.15; filter: blur(8px); pointer-events: none;
+        }
+
+        /* --- 2. LOGIN SCREEN --- */
         #initLoader { position: fixed; inset: 0; background: var(--bg-color); z-index: 9999; display: flex; justify-content: center; align-items: center; }
         .spinner { width: 40px; height: 40px; border: 4px solid var(--border-color); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- 3. MAC LOCK SCREEN (NEW LOGIN) --- */
-        .login-wrapper { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; z-index: 6000; backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); background: rgba(0,0,0,0.1); }
+        .login-wrapper { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; z-index: 6000; backdrop-filter: blur(40px); background: rgba(0,0,0,0.1); }
         .login-box { display: flex; flex-direction: column; align-items: center; text-align: center; animation: slideUp 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
         .mac-avatar-large { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #8b5cf6); color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; box-shadow: 0 10px 30px rgba(0,122,255,0.4); margin-bottom: 20px; font-weight: 600; }
-        .login-box h2 { margin: 0 0 30px 0; font-size: 2rem; font-weight: 600; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .login-box h2 { margin: 0 0 30px 0; font-size: 2rem; font-weight: 600; letter-spacing: -0.5px; }
         
         .login-input-group { position: relative; width: 280px; margin-bottom: 10px; }
         .login-input { width: 100%; padding: 12px 45px 12px 20px; background: rgba(255,255,255,0.4); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); outline: none; font-size: 1.05rem; backdrop-filter: blur(10px); box-shadow: var(--shadow-sm); transition: 0.2s; }
         [data-theme="dark"] .login-input { background: rgba(0,0,0,0.4); color: white; }
         .login-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
-        .login-input::placeholder { color: var(--text-muted); opacity: 0.8; }
-        
         .login-arrow-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; background: var(--text-main); color: var(--bg-color); border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; opacity: 0; pointer-events: none; }
         .login-input:focus + .login-arrow-btn, .login-input:not(:placeholder-shown) + .login-arrow-btn { opacity: 1; pointer-events: all; }
-        .login-arrow-btn:hover { transform: translateY(-50%) scale(1.1); background: var(--accent); color: white; }
-
+        .login-arrow-btn:hover { background: var(--accent); color: white; }
         #loginMsg { color: #ff3b30; font-size: 0.9rem; min-height: 20px; margin-top: 10px; font-weight: 500; }
 
-        /* --- 4. SIDEBAR --- */
-        .sidebar { width: 270px; height: 100vh; background: var(--sidebar-bg); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-right: 1px solid var(--border-color); position: fixed; top: 0; left: 0; display: flex; flex-direction: column; padding: 35px 20px; z-index: 100; }
+        /* --- 3. SIDEBAR --- */
+        .sidebar { width: 270px; height: 100vh; background: var(--sidebar-bg); backdrop-filter: blur(30px); border-right: 1px solid var(--border-color); position: fixed; top: 0; left: 0; display: flex; flex-direction: column; padding: 35px 20px; z-index: 100; }
         .sidebar-profile { display: flex; align-items: center; gap: 14px; margin-bottom: 45px; padding: 0 5px; }
         .profile-avatar { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #8b5cf6); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,122,255,0.3); }
-        .profile-info h3 { margin: 0; font-size: 1.05rem; font-weight: 600; letter-spacing: -0.3px; }
+        .profile-info h3 { margin: 0; font-size: 1.05rem; font-weight: 600; }
         .profile-info p { margin: 3px 0 0; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
-
         .nav-item { display: flex; align-items: center; gap: 14px; padding: 12px 14px; margin-bottom: 6px; border-radius: 10px; cursor: pointer; color: var(--text-main); font-weight: 500; font-size: 0.95rem; transition: 0.2s; }
         .nav-item:hover { background: rgba(0,0,0,0.04); }
         [data-theme="dark"] .nav-item:hover { background: rgba(255,255,255,0.06); }
         .nav-item.active { background: var(--card-bg); box-shadow: var(--shadow-sm); border: 1px solid var(--card-border); color: var(--accent); }
         .nav-item i { color: var(--accent); font-size: 1.2rem; width: 22px; text-align: center; }
 
-        /* --- 5. CONTENT & HEADER --- */
+        /* --- 4. CONTENT & HEADER --- */
         .content-wrapper { margin-left: 270px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
         .top-header { height: 75px; position: sticky; top: 0; background: var(--header-bg); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; padding: 0 40px; z-index: 90; }
-        
         .header-search { display: flex; align-items: center; gap: 12px; background: var(--card-bg); border: 1px solid var(--card-border); padding: 10px 20px; border-radius: 20px; color: var(--text-muted); cursor: pointer; width: 260px; font-size: 0.95rem; box-shadow: var(--shadow-sm); transition: 0.2s; }
         .header-search:hover { transform: translateY(-1px); box-shadow: 0 6px 15px rgba(0,0,0,0.06); }
-        
         .header-actions { display: flex; gap: 15px; align-items: center; }
         .icon-btn { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); font-size: 1.1rem; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: var(--shadow-sm); }
         .icon-btn:hover { background: var(--accent); color: white; border-color: var(--accent); transform: scale(1.05); }
 
         .main-container { padding: 40px 50px; max-width: 1200px; width: 100%; margin: 0 auto; display: none; animation: fadeIn 0.4s ease; }
 
-        /* --- 6. CARDS & GRIDS --- */
+        /* --- 5. CARDS & GRIDS --- */
         .section-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 30px; letter-spacing: -0.8px; color: var(--text-main); }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
-        
         .card { padding: 30px; border-radius: var(--radius-lg); cursor: pointer; display: flex; flex-direction: column; justify-content: center; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: rgba(0, 122, 255, 0.3); }
         .card-icon { font-size: 2.5rem; background: linear-gradient(135deg, var(--accent), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 18px; }
-        .card h3 { margin: 0; font-size: 1.1rem; font-weight: 600; letter-spacing: -0.3px; line-height: 1.4; }
+        .card h3 { margin: 0; font-size: 1.2rem; font-weight: 600; letter-spacing: -0.3px; line-height: 1.4; }
         
         .list-item { padding: 18px 24px; border-radius: var(--radius-md); margin-bottom: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
         .list-item:hover { transform: translateX(5px); border-color: var(--accent); box-shadow: var(--shadow-lg); }
         .list-item-title { display: flex; align-items: center; gap: 14px; font-weight: 500; font-size: 1.05rem; }
-        
         .score-badge { background: var(--accent-bg); color: var(--accent); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px; border: 1px solid rgba(0,122,255,0.2); }
 
-        /* --- 7. TASKS WIDGET --- */
+        /* --- 6. TASKS WIDGET --- */
         .tasks-widget { position: fixed; top: 90px; right: 40px; width: 340px; border-radius: var(--radius-lg); padding: 25px; display: none; flex-direction: column; z-index: 2000; animation: slideDown 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
         .task-input-group { display: flex; gap: 10px; margin-bottom: 20px; }
         .task-input { flex: 1; background: rgba(255,255,255,0.3); border: 1px solid var(--border-color); padding: 12px 14px; border-radius: var(--radius-md); color: var(--text-main); outline: none; font-size: 0.95rem; }
@@ -159,14 +143,43 @@
         .task-delete { color: #ff3b30; opacity: 0.5; cursor: pointer; transition: 0.2s; font-size: 1rem; }
         .task-delete:hover { opacity: 1; transform: scale(1.1); }
 
-        /* --- 8. VIEWER (Iframe only) --- */
+        /* --- 7. VIEWER --- */
         .viewer-overlay { position: fixed; inset: 0; z-index: 5000; display: none; flex-direction: column; background: var(--bg-color); }
         .viewer-header { height: 70px; background: var(--header-bg); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
         .viewer-body { flex: 1; display: flex; overflow: hidden; }
         .viewer-iframe { flex: 1; width: 100%; height: 100%; border: none; background: #ffffff; border-radius: 8px; margin: 15px; box-shadow: var(--shadow-sm); }
-        
         .back-btn { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 10px 20px; border-radius: var(--radius-md); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 10px; transition: 0.2s; box-shadow: var(--shadow-sm); }
         .back-btn:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+
+        /* --- 8. TIMER SIDEBAR --- */
+        .timer-sidebar { position: fixed; top: 0; right: -420px; width: 420px; height: 100vh; background: var(--header-bg); backdrop-filter: blur(40px); border-left: 1px solid var(--border-color); z-index: 7000; padding: 40px; display: flex; flex-direction: column; gap: 20px; box-shadow: -10px 0 40px rgba(0,0,0,0.1); transition: right 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .timer-sidebar.open { right: 0; }
+        .timer-display { font-size: 6rem; font-weight: 200; text-align: center; color: var(--text-main); margin: 40px 0 10px; font-variant-numeric: tabular-nums; letter-spacing: -3px; }
+        .method-btn { padding: 18px 20px; border-radius: var(--radius-md); cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; color: var(--text-main); }
+        .method-btn:hover { border-color: var(--accent); transform: translateX(-5px); box-shadow: var(--shadow-sm); }
+        .method-btn strong { display: block; font-size: 1.1rem; margin-bottom: 6px; font-weight: 600; }
+        .method-btn span { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* --- 9. SPOTLIGHT --- */
+        .spotlight-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); z-index: 8000; display: none; justify-content: center; align-items: flex-start; padding-top: 15vh; opacity: 0; transition: opacity 0.2s; }
+        .spotlight-overlay.active { opacity: 1; }
+        .spotlight-box { width: 650px; max-width: 90%; border-radius: 20px; overflow: hidden; transform: scale(0.95); transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
+        .spotlight-overlay.active .spotlight-box { transform: scale(1); }
+        .spotlight-input { width: 100%; padding: 25px 30px; font-size: 1.6rem; border: none; background: transparent; color: var(--text-main); outline: none; border-bottom: 1px solid var(--border-color); font-weight: 300; }
+        .spotlight-results { max-height: 450px; overflow-y: auto; padding: 15px; }
+        .spotlight-item { padding: 15px 20px; border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: 0.1s; }
+        .spotlight-item:hover { background: var(--accent); color: white; }
+
+        /* --- 10. MODALS (SPACED REPETITION) --- */
+        .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); z-index: 6000; display: none; justify-content: center; align-items: center; }
+        .modal-box { padding: 40px; width: 420px; text-align: center; border-radius: 24px; animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
+        .res-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--border-color); color: var(--text-main); padding: 16px; border-radius: var(--radius-md); cursor: pointer; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top:12px; width:100%; font-weight: 600; transition: 0.2s;}
+        [data-theme="dark"] .res-btn { background: rgba(0,0,0,0.2); }
+        .res-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+        
+        .rep-btn-hard:hover { border-color: #ff3b30; color: #ff3b30; background: rgba(255,59,48,0.1); }
+        .rep-btn-good:hover { border-color: #ff9500; color: #ff9500; background: rgba(255,149,0,0.1); }
+        .rep-btn-easy:hover { border-color: #34c759; color: #34c759; background: rgba(52,199,89,0.1); }
 
         .hidden { display: none !important; }
         @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
@@ -177,32 +190,25 @@
 <body data-theme="dark">
 
     <!-- AUDIO FILES FOR SPATIAL CUES -->
-    <!-- Pop sound for tasks -->
     <audio id="soundPop" src="https://assets.mixkit.co/sfx/preview/mixkit-modern-click-box-check-1120.mp3" preload="auto"></audio>
-    <!-- Soft click for closing modals/viewers -->
     <audio id="soundClick" src="https://assets.mixkit.co/sfx/preview/mixkit-light-button-256.mp3" preload="auto"></audio>
+    <audio id="alarmSound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" preload="auto"></audio>
 
     <!-- 1. INITIAL LOADER -->
-    <div id="initLoader">
-        <div class="spinner"></div>
-    </div>
+    <div id="initLoader"><div class="spinner"></div></div>
 
     <!-- 2. MAC LOCK SCREEN (LOGIN) -->
     <div id="loginScreen" class="login-wrapper hidden">
         <div class="login-box">
             <div class="mac-avatar-large">Σ</div>
             <h2>Στάθης</h2>
-            
             <div style="display:flex; flex-direction:column; gap:10px; align-items:center;">
-                <!-- Κρυφό email, αφού η εφαρμογή είναι κυρίως δική σου -->
                 <input type="email" id="email" class="login-input" placeholder="Apple ID (Email)" style="width:280px; padding:12px 20px; border-radius:20px;">
-                
                 <div class="login-input-group">
                     <input type="password" id="pass" class="login-input" placeholder="Εισάγετε συνθηματικό..." onkeypress="if(event.key === 'Enter') handleAuth()">
                     <button class="login-arrow-btn" onclick="handleAuth()"><i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
-            
             <div id="loginMsg"></div>
             <p onclick="toggleAuthMode()" style="margin-top:15px; cursor:pointer; font-size:0.85rem; color:var(--text-muted); font-weight:500;" id="authToggleText">Χρειάζεσαι λογαριασμό;</p>
         </div>
@@ -229,7 +235,7 @@
     <!-- 4. MAIN CONTENT -->
     <div class="content-wrapper hidden" id="mainWrapper">
         <header class="top-header">
-            <div class="header-search">
+            <div class="header-search" onclick="toggleSpotlight()">
                 <i class="fas fa-search"></i> Αναζήτηση... <span style="margin-left:auto; font-size:0.8rem; opacity:0.5;">⌘K</span>
             </div>
             <div class="header-actions">
@@ -279,12 +285,34 @@
         <div id="taskList" class="task-list"></div>
     </div>
 
-    <!-- 6. VIEWER (Iframe only - no scratchpad) -->
+    <!-- 6. TIMER SIDEBAR (FOCUS MODE) -->
+    <div id="timerSidebar" class="timer-sidebar glass-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 30px;">
+            <h2 style="margin:0; font-size:1.5rem;"><i class="fas fa-stopwatch" style="color:var(--accent);"></i> Focus Time</h2>
+            <button class="icon-btn" onclick="toggleTimerSidebar()"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="timerDisplay" class="timer-display">00:00</div>
+        <div id="timerMode" style="text-align:center; color:var(--accent); font-size:1rem; font-weight:700; margin-bottom:40px; letter-spacing:1px;">ΕΤΟΙΜΟΣ</div>
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            <div class="method-btn glass-panel" onclick="startTimer(25, 'POMODORO')">
+                <div><strong>Pomodoro</strong><span>25' Διάβασμα / 5' Διάλειμμα</span></div>
+                <i class="fas fa-play" style="color:var(--accent); font-size:1.2rem;"></i>
+            </div>
+            <div class="method-btn glass-panel" onclick="startTimer(50, 'DEEP WORK')">
+                <div><strong>Deep Work</strong><span>50' Διάβασμα / 10' Διάλειμμα</span></div>
+                <i class="fas fa-play" style="color:var(--accent); font-size:1.2rem;"></i>
+            </div>
+        </div>
+        <button class="btn-main" style="background:#ff3b30; margin-top:30px; font-weight:600;" onclick="stopTimer()"><i class="fas fa-stop" style="margin-right:8px;"></i> Διακοπή (Zen Mode Off)</button>
+    </div>
+
+    <!-- 7. VIEWER -->
     <div class="viewer-overlay" id="viewerOverlay">
         <div class="viewer-header">
             <button class="back-btn" onclick="closeViewer()"><i class="fas fa-chevron-down"></i> Κλείσιμο</button>
             <div style="font-weight: 600; font-size:1.1rem;" id="viewerTitle">Φόρτωση...</div>
             <div style="display:flex; gap:12px;">
+                <button class="back-btn" onclick="toggleTimerSidebar()" title="Χρονόμετρο"><i class="fas fa-stopwatch"></i> Focus</button>
                 <button class="back-btn" id="bookmarkBtn" onclick="toggleBookmark()" title="Αποθήκευση"><i class="fas fa-bookmark"></i></button>
             </div>
         </div>
@@ -293,6 +321,26 @@
         </div>
     </div>
 
+    <!-- 8. SPOTLIGHT SEARCH -->
+    <div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)">
+        <div class="spotlight-box glass-panel" onclick="event.stopPropagation()">
+            <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Τι ψάχνεις να διαβάσεις;" autocomplete="off" oninput="performSpotlightSearch()">
+            <div class="spotlight-results" id="spotlightResults"></div>
+        </div>
+    </div>
+
+    <!-- 9. SPACED REPETITION MODAL (ΝΕΟ) -->
+    <div class="modal-bg" id="repModal">
+        <div class="modal-box glass-panel">
+            <h2 style="margin-top:0; font-size:1.6rem;">Ολοκληρώθηκε! 🎉</h2>
+            <p class="text-muted" style="margin-bottom:25px; font-size:1.05rem;">Πώς σου φάνηκε το κουίζ;</p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="res-btn rep-btn-hard" onclick="saveRepetition('hard')">Δύσκολο 🔴 (Επανάληψη Αύριο)</button>
+                <button class="res-btn rep-btn-good" onclick="saveRepetition('good')">Καλό 🟡 (Επανάληψη σε 3 μέρες)</button>
+                <button class="res-btn rep-btn-easy" onclick="saveRepetition('easy')">Εύκολο 🟢 (Επανάληψη σε 7 μέρες)</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // --- 1. SUPABASE & STATE ---
@@ -302,18 +350,16 @@
 
         let isLoginMode = true;
         let dbData = null;
+        let studyTimer = null;
         let currentSelectedChapter = null;
 
-        // Τα Μαθήματα του 5ου Εξαμήνου
         const subjectsData = [
-            { id: 1, title: "Γενική Παθολογία & Παθολογική Ανατομική", icon: "fa-microscope", chapters: [
-                {id: 101, title: "Κεφάλαιο 1: Εισαγωγή", quiz: "pathology_q1.html"}
-            ] },
+            { id: 1, title: "Γενική Παθολογία & Παθολογική Ανατομική", icon: "fa-microscope", chapters: [ {id: 101, title: "Κεφάλαιο 1: Εισαγωγή", quiz: "pathology_q1.html"} ] },
             { id: 2, title: "Κρανιογναθικές Διαταραχές", icon: "fa-skull", chapters: [] },
             { id: 3, title: "Σημειολογία - Διάγνωση", icon: "fa-stethoscope", chapters: [] },
             { id: 4, title: "Οδοντιατρική Αναισθησιολογία", icon: "fa-syringe", chapters: [] },
             { id: 5, title: "Ακίνητη Προσθετική Ι", icon: "fa-teeth", chapters: [] },
-            { id: 6, title: "Κλινική Περιοδοντολογία (Εισαγωγή)", icon: "fa-teeth-open", chapters: [] },
+            { id: 6, title: "Κλινική Περιοδοντολογία", icon: "fa-teeth-open", chapters: [] },
             { id: 7, title: "Προκλινική Ενδοδοντία ΙΙ", icon: "fa-notes-medical", chapters: [] },
             { id: 8, title: "Ακτινολογία Στόματος ΙΙ", icon: "fa-x-ray", chapters: [] },
             { id: 9, title: "Οδοντική Χειρουργική ΙΙΙ", icon: "fa-tooth", chapters: [] },
@@ -323,51 +369,31 @@
 
         // --- AUDIO HELPERS ---
         function playSound(type) {
-            if(type === 'pop') {
-                const s = document.getElementById('soundPop');
-                s.currentTime = 0; s.play().catch(e=>{});
-            } else if (type === 'click') {
-                const s = document.getElementById('soundClick');
-                s.currentTime = 0; s.play().catch(e=>{});
-            }
+            try {
+                if(type === 'pop') { const s = document.getElementById('soundPop'); s.currentTime = 0; s.play().catch(()=>{}); } 
+                else if (type === 'click') { const s = document.getElementById('soundClick'); s.currentTime = 0; s.play().catch(()=>{}); }
+            } catch(e){}
         }
 
-        // --- 2. AUTHENTICATION & AUTO-LOGIN ---
-        // On Page Load: Check if user is already logged in to skip the login screen
+        // --- 2. AUTHENTICATION & INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', async () => {
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (session) {
-                // User is logged in, initApp will be called by onAuthStateChange
-            } else {
-                // No session, show Lock Screen
+            if (!session) {
                 document.getElementById('initLoader').style.display = 'none';
                 document.getElementById('loginScreen').classList.remove('hidden');
             }
-            
-            // Check Theme
             const savedTheme = localStorage.getItem('macTheme');
-            if(savedTheme === 'light') {
-                document.body.removeAttribute('data-theme');
-                document.getElementById('themeIcon').className = "fas fa-moon";
-            }
+            if(savedTheme === 'light') { document.body.removeAttribute('data-theme'); document.getElementById('themeIcon').className = "fas fa-moon"; }
         });
 
         async function handleAuth() {
+            playSound('click');
             const email = document.getElementById('email').value;
             const password = document.getElementById('pass').value;
-            if(!email || !password) {
-                document.getElementById('loginMsg').innerText = "Παρακαλώ συμπληρώστε τα πεδία.";
-                return;
-            }
+            if(!email || !password) { document.getElementById('loginMsg').innerText = "Παρακαλώ συμπληρώστε τα πεδία."; return; }
             try {
-                if(isLoginMode) {
-                    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                    if(error) throw error;
-                } else {
-                    const { error } = await supabaseClient.auth.signUp({ email, password });
-                    if(error) throw error;
-                    alert("Ο λογαριασμός δημιουργήθηκε!"); toggleAuthMode();
-                }
+                if(isLoginMode) { const { error } = await supabaseClient.auth.signInWithPassword({ email, password }); if(error) throw error; } 
+                else { const { error } = await supabaseClient.auth.signUp({ email, password }); if(error) throw error; alert("Λογαριασμός δημιουργήθηκε!"); toggleAuthMode(); }
             } catch(e) { document.getElementById('loginMsg').innerText = "Λάθος στοιχεία σύνδεσης."; }
         }
 
@@ -376,9 +402,8 @@
             document.getElementById('authToggleText').innerText = isLoginMode ? "Χρειάζεσαι λογαριασμό;" : "Έχεις ήδη λογαριασμό;"; 
             document.querySelector('.login-input-group + button').innerText = isLoginMode ? "Συνδεση" : "Εγγραφη";
         }
-        async function logout() { await supabaseClient.auth.signOut(); location.reload(); }
+        async function logout() { playSound('click'); await supabaseClient.auth.signOut(); location.reload(); }
 
-        // --- 3. INIT & SYNC ---
         async function initApp(user) {
             document.getElementById('initLoader').style.display = 'none';
             document.getElementById('loginScreen').classList.add('hidden');
@@ -389,42 +414,33 @@
                 let { data, error } = await supabaseClient.from('profiles').select('*').eq('user_id', user.id).single();
                 if(error && error.code === 'PGRST116') {
                     const { data: newProf } = await supabaseClient.from('profiles').insert([{ 
-                        user_id: user.id, streak: 0, bookmarks: [], tasks: [], stats: { quiz_scores: {} }
+                        user_id: user.id, streak: 0, bookmarks: [], tasks: [], stats: { quiz_scores: {}, repetition: {} }
                     }]).select().single();
                     data = newProf;
                 }
-                
-                dbData = data || { streak: 0, bookmarks: [], tasks: [], stats: { quiz_scores: {} } };
+                dbData = data || { streak: 0, bookmarks: [], tasks: [], stats: { quiz_scores: {}, repetition: {} } };
                 if(!dbData.bookmarks) dbData.bookmarks = [];
                 if(!dbData.tasks) dbData.tasks = [];
                 if(!dbData.stats) dbData.stats = {};
                 if(!dbData.stats.quiz_scores) dbData.stats.quiz_scores = {};
-                
-                document.getElementById('menuStreak').innerText = dbData.streak || 0;
+                if(!dbData.stats.repetition) dbData.stats.repetition = {};
                 
                 renderSubjects();
                 renderTasks();
-            } catch(e) { console.error("DB Error:", e); renderSubjects(); }
+            } catch(e) { console.error(e); renderSubjects(); }
         }
 
-        async function sync() {
-            if(dbData && dbData.user_id) {
-                await supabaseClient.from('profiles').update({ 
-                    streak: dbData.streak, bookmarks: dbData.bookmarks, tasks: dbData.tasks, stats: dbData.stats
-                }).eq('user_id', dbData.user_id);
-            }
-        }
+        async function sync() { if(dbData && dbData.user_id) { await supabaseClient.from('profiles').update({ streak: dbData.streak, bookmarks: dbData.bookmarks, tasks: dbData.tasks, stats: dbData.stats }).eq('user_id', dbData.user_id); } }
         supabaseClient.auth.onAuthStateChange((event, session) => { if (session) initApp(session.user); });
 
-        // --- 4. NAVIGATION & UI ---
+        // --- 3. UI TAB SWITCHING ---
         function switchTab(tabId, navId = '') {
+            playSound('click');
             const sections = ['subjectsSection', 'chapterSection', 'quizHubSection', 'savedFilesSection'];
             sections.forEach(sec => document.getElementById(sec).style.display = 'none');
             document.getElementById(tabId).style.display = 'block';
-            
             document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
             if(navId) document.getElementById(navId).classList.add('active');
-            
             if(tabId === 'quizHubSection') buildQuizHub();
             if(tabId === 'savedFilesSection') buildSavedFiles();
         }
@@ -432,23 +448,14 @@
         function toggleDarkMode() {
             playSound('click');
             const isDark = document.body.getAttribute('data-theme') === 'dark';
-            if(isDark) {
-                document.body.removeAttribute('data-theme');
-                document.getElementById('themeIcon').className = "fas fa-moon";
-                localStorage.setItem('macTheme', 'light');
-            } else {
-                document.body.setAttribute('data-theme', 'dark');
-                document.getElementById('themeIcon').className = "fas fa-sun";
-                localStorage.setItem('macTheme', 'dark');
-            }
+            if(isDark) { document.body.removeAttribute('data-theme'); document.getElementById('themeIcon').className = "fas fa-moon"; localStorage.setItem('macTheme', 'light'); } 
+            else { document.body.setAttribute('data-theme', 'dark'); document.getElementById('themeIcon').className = "fas fa-sun"; localStorage.setItem('macTheme', 'dark'); }
         }
 
-        // --- 5. DASHBOARD & CHAPTERS ---
+        // --- 4. SUBJECTS & CHAPTERS ---
         function renderSubjects() {
             const grid = document.getElementById('subjectsGrid'); let html = '';
-            subjectsData.forEach(s => { 
-                html += `<div class="card glass-panel" onclick="openSubject(${s.id})"><div class="card-icon"><i class="fas ${s.icon}"></i></div><h3>${s.title}</h3></div>`; 
-            });
+            subjectsData.forEach(s => { html += `<div class="card glass-panel" onclick="openSubject(${s.id})"><div class="card-icon"><i class="fas ${s.icon}"></i></div><h3>${s.title}</h3></div>`; });
             grid.innerHTML = html;
         }
 
@@ -457,31 +464,32 @@
             if(score) return `<span class="score-badge">${score}</span>`;
             return ''; 
         }
+        function getRepetitionBadge(chapterId) {
+            const repDateStr = dbData?.stats?.repetition?.[chapterId];
+            if(!repDateStr) return '';
+            const repDate = new Date(repDateStr);
+            if(new Date() >= repDate) return `<span title="Χρειάζεται επανάληψη!" style="font-size:0.9rem;">🔴</span>`;
+            return '';
+        }
 
         function openSubject(id) {
             switchTab('chapterSection', 'nav-subjects');
-            playSound('click');
             const subject = subjectsData.find(s => s.id === id);
             document.getElementById('chapterTitle').innerText = subject.title;
             const list = document.getElementById('chapterList'); list.innerHTML = '';
-            
             if (subject.chapters.length === 0) { list.innerHTML = '<p class="text-muted" style="font-size:1.1rem;">Δεν υπάρχουν κουίζ ακόμα.</p>'; return; }
             
             subject.chapters.forEach(ch => {
-                const scoreBadge = getScoreBadge(ch.id);
                 list.innerHTML += `
                 <div class="list-item glass-panel" onclick="openChapter(${ch.id}, '${ch.title}', '${ch.quiz}')">
-                    <div class="list-item-title"><i class="fas fa-brain" style="color:var(--accent);"></i> ${ch.title}</div>
-                    <div style="display:flex; align-items:center; gap:15px;">
-                        ${scoreBadge}
-                        <i class="fas fa-chevron-right" style="color:var(--text-muted); opacity:0.6;"></i>
-                    </div>
+                    <div class="list-item-title"><i class="fas fa-brain" style="color:var(--accent);"></i> ${ch.title} ${getRepetitionBadge(ch.id)}</div>
+                    <div style="display:flex; align-items:center; gap:15px;">${getScoreBadge(ch.id)}<i class="fas fa-chevron-right" style="color:var(--text-muted); opacity:0.6;"></i></div>
                 </div>`;
             });
         }
 
         function openChapter(id, title, quizUrl) {
-            if(!quizUrl) { alert("Δεν έχει προστεθεί αρχείο κουίζ για αυτό το κεφάλαιο ακόμα."); return; }
+            if(!quizUrl) { alert("Δεν έχει προστεθεί αρχείο κουίζ."); return; }
             playSound('click');
             currentSelectedChapter = { id, title, quiz: quizUrl };
             document.getElementById('viewerTitle').innerText = title + ' (Κουίζ)';
@@ -489,24 +497,19 @@
             document.getElementById('viewerOverlay').style.display = 'flex';
             
             const btn = document.getElementById('bookmarkBtn');
-            if(dbData.bookmarks.includes(id)) { btn.style.color = "var(--accent)"; } 
-            else { btn.style.color = "var(--text-main)"; }
+            if(dbData.bookmarks.includes(id)) btn.style.color = "var(--accent)"; else btn.style.color = "var(--text-main)";
         }
 
         function closeViewer() {
             playSound('click');
             document.getElementById('viewerOverlay').style.display = 'none';
             document.getElementById('contentFrame').src = '';
-            
-            if(document.getElementById('chapterSection').style.display === 'block') {
-                const currentSubjectName = document.getElementById('chapterTitle').innerText;
-                const subject = subjectsData.find(s => s.title === currentSubjectName);
-                if(subject) openSubject(subject.id);
-            }
+            if(document.getElementById('chapterSection').style.display === 'block') { const sub = subjectsData.find(s => s.title === document.getElementById('chapterTitle').innerText); if(sub) openSubject(sub.id); }
             if(document.getElementById('quizHubSection').style.display === 'block') buildQuizHub();
             if(document.getElementById('savedFilesSection').style.display === 'block') buildSavedFiles();
         }
 
+        // --- 5. SPACED REPETITION (POST MESSAGE) ---
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'QUIZ_COMPLETED') {
                 const score = event.data.score; 
@@ -514,19 +517,32 @@
                     if (!dbData.stats.quiz_scores) dbData.stats.quiz_scores = {};
                     dbData.stats.quiz_scores[currentSelectedChapter.id] = score;
                     sync();
+                    // Άνοιξε το Modal Επανάληψης
+                    playSound('pop');
+                    document.getElementById('repModal').style.display = 'flex';
                 }
             }
         });
 
-        // --- 6. MODULES (Bookmarks, Quiz Hub) ---
-        function toggleBookmark() {
-            if(!currentSelectedChapter) return;
+        function saveRepetition(difficulty) {
             playSound('click');
-            const id = currentSelectedChapter.id;
-            const btn = document.getElementById('bookmarkBtn');
+            if(!dbData.stats.repetition) dbData.stats.repetition = {};
+            let daysToAdd = (difficulty === 'hard') ? 1 : (difficulty === 'good' ? 3 : 7);
+            const nextDate = new Date(); nextDate.setDate(nextDate.getDate() + daysToAdd);
+            
+            dbData.stats.repetition[currentSelectedChapter.id] = nextDate.toISOString();
+            sync();
+            
+            document.getElementById('repModal').style.display = 'none';
+            closeViewer(); // Επιστροφή στη λίστα για να δει το σηματάκι
+        }
+
+        // --- 6. BOOKMARKS & QUIZ HUB ---
+        function toggleBookmark() {
+            if(!currentSelectedChapter) return; playSound('click');
+            const id = currentSelectedChapter.id; const btn = document.getElementById('bookmarkBtn');
             const idx = dbData.bookmarks.indexOf(id);
-            if(idx > -1) { dbData.bookmarks.splice(idx, 1); btn.style.color = "var(--text-main)"; } 
-            else { dbData.bookmarks.push(id); btn.style.color = "var(--accent)"; }
+            if(idx > -1) { dbData.bookmarks.splice(idx, 1); btn.style.color = "var(--text-main)"; } else { dbData.bookmarks.push(id); btn.style.color = "var(--accent)"; }
             sync();
         }
 
@@ -536,13 +552,10 @@
             subjectsData.forEach(sub => {
                 sub.chapters.forEach(ch => {
                     if(dbData.bookmarks.includes(ch.id)) {
-                        const scoreBadge = getScoreBadge(ch.id);
                         container.innerHTML += `
                         <div class="list-item glass-panel">
-                            <span style="flex:1; cursor:pointer; font-weight:500; font-size:1.05rem;" onclick="openChapter(${ch.id}, '${ch.title}', '${ch.quiz}')">
-                                <i class="fas fa-heart" style="color:var(--accent); margin-right:12px;"></i> ${ch.title} <span class="text-muted" style="margin-left:8px;">(${sub.title})</span>
-                            </span>
-                            ${scoreBadge}
+                            <span style="flex:1; cursor:pointer; font-weight:500; font-size:1.05rem;" onclick="openChapter(${ch.id}, '${ch.title}', '${ch.quiz}')"><i class="fas fa-heart" style="color:var(--accent); margin-right:12px;"></i> ${ch.title} ${getRepetitionBadge(ch.id)}</span>
+                            ${getScoreBadge(ch.id)}
                             <i class="fas fa-trash" style="color:#ff3b30; cursor:pointer; font-size:1.1rem; padding:5px; margin-left:15px;" onclick="removeBookmarkDirect(${ch.id})"></i>
                         </div>`;
                     }
@@ -552,47 +565,54 @@
         function removeBookmarkDirect(id) { playSound('click'); const idx = dbData.bookmarks.indexOf(id); if(idx>-1) { dbData.bookmarks.splice(idx, 1); sync(); buildSavedFiles(); } }
 
         function buildQuizHub() {
-            const container = document.getElementById('quizHubContainer'); container.innerHTML = '';
-            let hasQuiz = false;
+            const container = document.getElementById('quizHubContainer'); container.innerHTML = ''; let hasQuiz = false;
             subjectsData.forEach(sub => {
                 const quizzes = sub.chapters.filter(ch => ch.quiz && ch.quiz.trim() !== '');
                 if(quizzes.length > 0) {
                     hasQuiz = true; let html = '';
-                    quizzes.forEach(ch => {
-                        const scoreBadge = getScoreBadge(ch.id);
-                        html += `
-                        <div class="list-item glass-panel" onclick="openChapter(${ch.id}, '${ch.title}', '${ch.quiz}')">
-                            <div class="list-item-title"><i class="fas fa-play-circle" style="color:var(--accent);"></i> ${ch.title}</div>
-                            <div style="display:flex; align-items:center; gap:15px;">
-                                ${scoreBadge}
-                                <i class="fas fa-chevron-right text-muted"></i>
-                            </div>
-                        </div>`;
-                    });
+                    quizzes.forEach(ch => { html += `<div class="list-item glass-panel" onclick="openChapter(${ch.id}, '${ch.title}', '${ch.quiz}')"><div class="list-item-title"><i class="fas fa-play-circle" style="color:var(--accent);"></i> ${ch.title} ${getRepetitionBadge(ch.id)}</div><div style="display:flex; align-items:center; gap:15px;">${getScoreBadge(ch.id)}<i class="fas fa-chevron-right text-muted"></i></div></div>`; });
                     container.innerHTML += `<div style="margin-bottom:30px;"><h3 style="margin-bottom:15px; font-size:1.2rem; color:var(--text-main);"><i class="fas ${sub.icon}"></i> ${sub.title}</h3>${html}</div>`;
                 }
             });
             if(!hasQuiz) container.innerHTML = '<p class="text-muted" style="font-size:1.1rem;">Δεν βρέθηκαν διαθέσιμα Κουίζ.</p>';
         }
 
-        // --- 7. TASKS WIDGET ---
+        // --- 7. TASKS ---
         function toggleTasksWidget() { playSound('click'); const w = document.getElementById('tasksWidget'); w.style.display = w.style.display === 'flex' ? 'none' : 'flex'; if(w.style.display==='flex') document.getElementById('newTaskInput').focus(); }
         function renderTasks() {
             const list = document.getElementById('taskList'); list.innerHTML = '';
             if(!dbData.tasks.length) { list.innerHTML = '<p class="text-muted" style="font-size:0.95rem; margin-top:10px;">Κανένας στόχος για σήμερα.</p>'; return; }
             dbData.tasks.forEach((t, i) => {
-                list.innerHTML += `
-                <div class="task-item">
-                    <div class="task-checkbox ${t.done ? 'checked' : ''}" onclick="toggleTask(${i})"></div>
-                    <span class="task-text ${t.done ? 'checked' : ''}">${t.text}</span>
-                    <i class="fas fa-trash task-delete" onclick="deleteTask(${i})"></i>
-                </div>`;
+                list.innerHTML += `<div class="task-item"><div class="task-checkbox ${t.done ? 'checked' : ''}" onclick="toggleTask(${i})"></div><span class="task-text ${t.done ? 'checked' : ''}">${t.text}</span><i class="fas fa-trash task-delete" onclick="deleteTask(${i})"></i></div>`;
             });
         }
         function addTask() { const inp = document.getElementById('newTaskInput'); const txt = inp.value.trim(); if(txt) { playSound('pop'); dbData.tasks.push({text: txt, done: false}); inp.value=''; sync(); renderTasks(); } }
         function toggleTask(i) { playSound('pop'); dbData.tasks[i].done = !dbData.tasks[i].done; sync(); renderTasks(); }
         function deleteTask(i) { playSound('click'); dbData.tasks.splice(i, 1); sync(); renderTasks(); }
 
+        // --- 8. FOCUS TIMER ---
+        function toggleTimerSidebar() { playSound('click'); const sb = document.getElementById('timerSidebar'); sb.classList.toggle('open'); document.getElementById('timerOverlay').style.display = sb.classList.contains('open') ? 'block' : 'none'; }
+        function startTimer(min, mode) { 
+            playSound('click'); stopTimer(); document.getElementById('timerMode').innerText = mode; let sec = min * 60; updateTimeDisplay(sec); 
+            document.body.classList.add('focus-active'); // ZEN MODE ON
+            studyTimer = setInterval(() => { 
+                sec--; updateTimeDisplay(sec); 
+                if(sec <= 0) { stopTimer(); document.getElementById('alarmSound').play(); alert("Ο χρόνος τελείωσε! Κάνε ένα διάλειμμα."); } 
+            }, 1000); 
+        }
+        function stopTimer() { clearInterval(studyTimer); updateTimeDisplay(0); document.getElementById('timerMode').innerText = "ΕΤΟΙΜΟΣ"; document.body.classList.remove('focus-active'); /* ZEN MODE OFF */ }
+        function updateTimeDisplay(sec) { const m = Math.floor(sec/60).toString().padStart(2,'0'); const s = (sec%60).toString().padStart(2,'0'); document.getElementById('timerDisplay').innerText = `${m}:${s}`; }
+
+        // --- 9. SPOTLIGHT ---
+        function toggleSpotlight() { playSound('click'); const overlay = document.getElementById('spotlightOverlay'); if (overlay.style.display === 'flex') { overlay.classList.remove('active'); setTimeout(() => overlay.style.display = 'none', 200); } else { overlay.style.display = 'flex'; setTimeout(() => { overlay.classList.add('active'); document.getElementById('spotlightInput').focus(); }, 10); } }
+        function closeSpotlight(e) { if (e.target.id === 'spotlightOverlay') toggleSpotlight(); }
+        document.addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); toggleSpotlight(); } if (e.key === 'Escape') { const o = document.getElementById('spotlightOverlay'); if(o.classList.contains('active')) toggleSpotlight(); } });
+        function performSpotlightSearch() {
+            const q = document.getElementById('spotlightInput').value.toLowerCase().trim(); const res = document.getElementById('spotlightResults'); res.innerHTML = '';
+            if(q.length < 2) return; let matches = 0;
+            subjectsData.forEach(sub => { sub.chapters.forEach(ch => { if(ch.title.toLowerCase().includes(q) || sub.title.toLowerCase().includes(q)) { matches++; res.innerHTML += `<div class="spotlight-item" onclick="toggleSpotlight(); openChapter(${ch.id}, '${ch.title}', '${ch.quiz}');"><span style="font-weight:500; font-size:1.1rem;"><i class="fas fa-brain" style="margin-right:10px; opacity:0.8;"></i>${ch.title}</span><span class="text-muted" style="font-size:0.9rem;">${sub.title}</span></div>`; } }); });
+            if(matches === 0) res.innerHTML = '<div style="padding:25px; text-align:center; font-size:1.1rem;" class="text-muted">Δεν βρέθηκαν αποτελέσματα.</div>';
+        }
     </script>
 </body>
 </html>
