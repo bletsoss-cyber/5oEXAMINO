@@ -74,11 +74,11 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .login-wrapper { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; z-index: 6000; backdrop-filter: blur(40px); background: rgba(0,0,0,0.1); }
-        .login-box { display: flex; flex-direction: column; align-items: center; text-align: center; animation: slideUp 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
+        .login-box { display: flex; flex-direction: column; align-items: center; text-align: center; animation: slideUp 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28); width: 380px; max-width: 90%; padding: 40px 20px;}
         .mac-avatar-large { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #8b5cf6); color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; box-shadow: 0 10px 30px rgba(0,122,255,0.4); margin-bottom: 20px; font-weight: 600; }
         .login-box h2 { margin: 0 0 30px 0; font-size: 2rem; font-weight: 600; letter-spacing: -0.5px; }
         
-        .login-input-group { position: relative; width: 280px; margin-bottom: 10px; }
+        .login-input-group { position: relative; width: 100%; max-width: 280px; margin-bottom: 10px; }
         .login-input { width: 100%; padding: 12px 45px 12px 20px; background: rgba(255,255,255,0.4); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); outline: none; font-size: 1.05rem; backdrop-filter: blur(10px); box-shadow: var(--shadow-sm); transition: 0.2s; }
         [data-theme="dark"] .login-input { background: rgba(0,0,0,0.4); color: white; }
         .login-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
@@ -88,7 +88,7 @@
         #loginMsg { color: #ff3b30; font-size: 0.9rem; min-height: 20px; margin-top: 10px; font-weight: 500; }
 
         /* --- 3. SIDEBAR --- */
-        .sidebar { width: 270px; height: 100vh; background: var(--sidebar-bg); backdrop-filter: blur(30px); border-right: 1px solid var(--border-color); position: fixed; top: 0; left: 0; display: flex; flex-direction: column; padding: 35px 20px; z-index: 100; }
+        .sidebar { width: 270px; height: 100vh; background: var(--sidebar-bg); backdrop-filter: blur(30px); border-right: 1px solid var(--border-color); position: fixed; top: 0; left: 0; display: flex; flex-direction: column; padding: 35px 20px; z-index: 100; transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1); }
         .sidebar-profile { display: flex; align-items: center; gap: 14px; margin-bottom: 45px; padding: 0 5px; }
         .profile-avatar { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #8b5cf6); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,122,255,0.3); }
         .profile-info h3 { margin: 0; font-size: 1.05rem; font-weight: 600; }
@@ -98,13 +98,20 @@
         [data-theme="dark"] .nav-item:hover { background: rgba(255,255,255,0.06); }
         .nav-item.active { background: var(--card-bg); box-shadow: var(--shadow-sm); border: 1px solid var(--card-border); color: var(--accent); }
         .nav-item i { color: var(--accent); font-size: 1.2rem; width: 22px; text-align: center; }
+        
+        .mobile-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 95; display: none; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(3px); }
 
         /* --- 4. CONTENT & HEADER --- */
-        .content-wrapper { margin-left: 270px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+        .content-wrapper { margin-left: 270px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; transition: margin-left 0.3s; }
         .top-header { height: 75px; position: sticky; top: 0; background: var(--header-bg); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; padding: 0 40px; z-index: 90; }
+        
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; padding: 5px; }
+        
         .header-search { display: flex; align-items: center; gap: 12px; background: var(--card-bg); border: 1px solid var(--card-border); padding: 10px 20px; border-radius: 20px; color: var(--text-muted); cursor: pointer; width: 260px; font-size: 0.95rem; box-shadow: var(--shadow-sm); transition: 0.2s; }
         .header-search:hover { transform: translateY(-1px); box-shadow: 0 6px 15px rgba(0,0,0,0.06); }
-        .header-actions { display: flex; gap: 15px; align-items: center; }
+        
+        .header-actions { display: flex; gap: 10px; align-items: center; }
         .icon-btn { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); font-size: 1.1rem; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: var(--shadow-sm); }
         .icon-btn:hover { background: var(--accent); color: white; border-color: var(--accent); transform: scale(1.05); }
 
@@ -132,10 +139,10 @@
         .task-list { list-style: none; padding: 0; margin: 0; max-height: 300px; overflow-y: auto; padding-right: 5px; }
         .task-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
         .task-item:last-child { border-bottom: none; }
-        .task-checkbox { width: 22px; height: 22px; border: 2px solid var(--border-color); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; background: rgba(255,255,255,0.2); }
+        .task-checkbox { width: 22px; height: 22px; border: 2px solid var(--border-color); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; background: rgba(255,255,255,0.2); flex-shrink: 0;}
         .task-checkbox.checked { background: var(--accent); border-color: var(--accent); }
         .task-checkbox.checked::after { content: '✔'; font-size: 0.75rem; color: white; }
-        .task-text { flex: 1; font-size: 0.95rem; transition: 0.2s; font-weight: 500; }
+        .task-text { flex: 1; font-size: 0.95rem; transition: 0.2s; font-weight: 500; word-break: break-word; }
         .task-text.checked { text-decoration: line-through; opacity: 0.4; }
         .task-delete { color: #ff3b30; opacity: 0.5; cursor: pointer; transition: 0.2s; font-size: 1rem; }
         .task-delete:hover { opacity: 1; transform: scale(1.1); }
@@ -143,7 +150,7 @@
         /* --- 7. TIMER SIDEBAR --- */
         .timer-sidebar { position: fixed; top: 0; right: -420px; width: 420px; height: 100vh; background: var(--header-bg); backdrop-filter: blur(40px); border-left: 1px solid var(--border-color); z-index: 7000; padding: 40px; display: flex; flex-direction: column; gap: 20px; box-shadow: -10px 0 40px rgba(0,0,0,0.1); transition: right 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .timer-sidebar.open { right: 0; }
-        .timer-display { font-size: 6rem; font-weight: 200; text-align: center; color: var(--text-main); margin: 40px 0 10px; font-variant-numeric: tabular-nums; letter-spacing: -3px; }
+        .timer-display { font-size: 5rem; font-weight: 200; text-align: center; color: var(--text-main); margin: 30px 0 10px; font-variant-numeric: tabular-nums; letter-spacing: -2px; }
         .method-btn { padding: 18px 20px; border-radius: var(--radius-md); cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; color: var(--text-main); }
         .method-btn:hover { border-color: var(--accent); transform: translateX(-5px); box-shadow: var(--shadow-sm); }
         .method-btn strong { display: block; font-size: 1.1rem; margin-bottom: 6px; font-weight: 600; }
@@ -151,10 +158,10 @@
 
         /* --- 8. VIEWER --- */
         .viewer-overlay { position: fixed; inset: 0; z-index: 5000; display: none; flex-direction: column; background: var(--bg-color); }
-        .viewer-header { height: 70px; background: var(--header-bg); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
+        .viewer-header { height: 70px; background: var(--header-bg); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; gap: 10px;}
         .viewer-body { flex: 1; display: flex; overflow: hidden; }
         .viewer-iframe { flex: 1; width: 100%; height: 100%; border: none; background: #ffffff; border-radius: 8px; margin: 15px; box-shadow: var(--shadow-sm); }
-        .back-btn { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 10px 20px; border-radius: var(--radius-md); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 10px; transition: 0.2s; box-shadow: var(--shadow-sm); }
+        .back-btn { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 10px 20px; border-radius: var(--radius-md); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 10px; transition: 0.2s; box-shadow: var(--shadow-sm); white-space: nowrap;}
         .back-btn:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); transform: translateY(-1px); }
 
         /* --- 9. SPOTLIGHT --- */
@@ -162,18 +169,17 @@
         .spotlight-overlay.active { opacity: 1; }
         .spotlight-box { width: 650px; max-width: 90%; border-radius: 20px; overflow: hidden; transform: scale(0.95); transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
         .spotlight-overlay.active .spotlight-box { transform: scale(1); }
-        .spotlight-input { width: 100%; padding: 25px 30px; font-size: 1.6rem; border: none; background: transparent; color: var(--text-main); outline: none; border-bottom: 1px solid var(--border-color); font-weight: 300; }
+        .spotlight-input { width: 100%; padding: 25px 30px; font-size: 1.3rem; border: none; background: transparent; color: var(--text-main); outline: none; border-bottom: 1px solid var(--border-color); font-weight: 300; }
         .spotlight-results { max-height: 450px; overflow-y: auto; padding: 15px; }
         .spotlight-item { padding: 15px 20px; border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; transition: 0.1s; }
         .spotlight-item:hover { background: var(--accent); color: white; }
 
-        /* --- 10. MODALS (SPACED REPETITION) --- */
+        /* --- 10. MODALS --- */
         .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); z-index: 6000; display: none; justify-content: center; align-items: center; }
-        .modal-box { padding: 40px; width: 420px; text-align: center; border-radius: 24px; animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
+        .modal-box { padding: 40px 20px; width: 90%; max-width: 420px; text-align: center; border-radius: 24px; animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
         .res-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--border-color); color: var(--text-main); padding: 16px; border-radius: var(--radius-md); cursor: pointer; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top:12px; width:100%; font-weight: 600; transition: 0.2s;}
         [data-theme="dark"] .res-btn { background: rgba(0,0,0,0.2); }
         .res-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
-        
         .rep-btn-hard:hover { border-color: #ff3b30; color: #ff3b30; background: rgba(255,59,48,0.1); }
         .rep-btn-good:hover { border-color: #ff9500; color: #ff9500; background: rgba(255,149,0,0.1); }
         .rep-btn-easy:hover { border-color: #34c759; color: #34c759; background: rgba(52,199,89,0.1); }
@@ -182,25 +188,52 @@
         @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
         @keyframes slideDown { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
         @keyframes slideUp { from {opacity:0; transform:translateY(20px) scale(0.95);} to {opacity:1; transform:translateY(0) scale(1);} }
+
+        /* =========================================
+           📱 MOBILE RESPONSIVE MEDIA QUERIES
+           ========================================= */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            
+            .content-wrapper { margin-left: 0; }
+            .top-header { padding: 0 20px; }
+            .mobile-menu-btn { display: block; }
+            
+            .header-search { width: 40px; height: 40px; padding: 0; justify-content: center; border-radius: 50%; }
+            .header-search span { display: none; }
+            .header-search i { margin: 0; }
+
+            .main-container { padding: 25px 20px; }
+            .section-title { font-size: 1.5rem; }
+            
+            .grid { grid-template-columns: 1fr; }
+            
+            .tasks-widget { right: 5%; top: 80px; width: 90%; }
+            .timer-sidebar { width: 100%; right: -100%; padding: 30px 20px; }
+            
+            .viewer-header { flex-wrap: wrap; height: auto; padding: 15px 20px; }
+            .viewer-iframe { margin: 0; border-radius: 0; }
+            
+            .spotlight-input { font-size: 1.1rem; padding: 20px; }
+        }
     </style>
 </head>
 <body data-theme="dark">
 
-    <!-- AUDIO FILES FOR SPATIAL CUES -->
     <audio id="soundPop" src="https://assets.mixkit.co/sfx/preview/mixkit-modern-click-box-check-1120.mp3" preload="auto"></audio>
     <audio id="soundClick" src="https://assets.mixkit.co/sfx/preview/mixkit-light-button-256.mp3" preload="auto"></audio>
     <audio id="alarmSound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" preload="auto"></audio>
 
-    <!-- 1. INITIAL LOADER -->
     <div id="initLoader"><div class="spinner"></div></div>
 
-    <!-- 2. MAC LOCK SCREEN (LOGIN) -->
+    <!-- MAC LOCK SCREEN (LOGIN) -->
     <div id="loginScreen" class="login-wrapper hidden">
-        <div class="login-box">
+        <div class="login-box glass-panel">
             <div class="mac-avatar-large">Σ</div>
             <h2>Στάθης</h2>
-            <div style="display:flex; flex-direction:column; gap:10px; align-items:center;">
-                <input type="email" id="email" class="login-input" placeholder="Username" style="width:280px; padding:12px 20px; border-radius:20px;">
+            <div style="display:flex; flex-direction:column; gap:10px; align-items:center; width:100%;">
+                <input type="email" id="email" class="login-input" placeholder="Apple ID (Email)" style="max-width:280px; padding:12px 20px; border-radius:20px;">
                 <div class="login-input-group">
                     <input type="password" id="pass" class="login-input" placeholder="Εισάγετε συνθηματικό..." onkeypress="if(event.key === 'Enter') handleAuth()">
                     <button class="login-arrow-btn" onclick="handleAuth()"><i class="fas fa-arrow-right"></i></button>
@@ -211,7 +244,10 @@
         </div>
     </div>
 
-    <!-- 3. SIDEBAR -->
+    <!-- MOBILE OVERLAY FOR SIDEBAR -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- SIDEBAR -->
     <nav class="sidebar hidden" id="sidebar">
         <div class="sidebar-profile">
             <div class="profile-avatar">Σ</div>
@@ -229,11 +265,14 @@
         </div>
     </nav>
 
-    <!-- 4. MAIN CONTENT -->
+    <!-- MAIN CONTENT -->
     <div class="content-wrapper hidden" id="mainWrapper">
         <header class="top-header">
-            <div class="header-search" onclick="toggleSpotlight()">
-                <i class="fas fa-search"></i> Αναζήτηση... <span style="margin-left:auto; font-size:0.8rem; opacity:0.5;">⌘K</span>
+            <div class="header-left">
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+                <div class="header-search" onclick="toggleSpotlight()">
+                    <i class="fas fa-search"></i> <span>Αναζήτηση...</span>
+                </div>
             </div>
             <div class="header-actions">
                 <button class="icon-btn" onclick="toggleTasksWidget()" title="Ημερήσιοι Στόχοι"><i class="fas fa-check-double"></i></button>
@@ -241,35 +280,31 @@
             </div>
         </header>
 
-        <!-- DASHBOARD (Subjects) -->
         <main class="main-container" id="subjectsSection" style="display: block;">
             <h1 class="section-title">5ο Εξάμηνο</h1>
             <div id="subjectsGrid" class="grid"></div>
         </main>
 
-        <!-- CHAPTERS LIST -->
         <main class="main-container" id="chapterSection">
-            <div style="display:flex; align-items:center; gap:20px; margin-bottom:30px;">
-                <button class="back-btn" onclick="switchTab('subjectsSection', 'nav-subjects'); playSound('click');"><i class="fas fa-chevron-left"></i> Επιστροφή</button>
-                <h1 id="chapterTitle" style="margin: 0; font-size:1.8rem; letter-spacing:-0.5px;">Μάθημα</h1>
+            <div style="display:flex; align-items:center; gap:15px; margin-bottom:25px;">
+                <button class="back-btn" onclick="switchTab('subjectsSection', 'nav-subjects'); playSound('click');"><i class="fas fa-chevron-left"></i></button>
+                <h1 id="chapterTitle" style="margin: 0; font-size:1.5rem; letter-spacing:-0.5px;">Μάθημα</h1>
             </div>
             <div id="chapterList"></div>
         </main>
 
-        <!-- QUIZ HUB -->
         <main class="main-container" id="quizHubSection">
             <h1 class="section-title">Κέντρο Κουίζ</h1>
             <div id="quizHubContainer"></div>
         </main>
 
-        <!-- SAVED FILES -->
         <main class="main-container" id="savedFilesSection">
             <h1 class="section-title">Αποθηκευμένα Κουίζ</h1>
             <div id="savedFilesContainer"></div>
         </main>
     </div>
 
-    <!-- 5. TASKS WIDGET -->
+    <!-- TASKS WIDGET -->
     <div id="tasksWidget" class="tasks-widget glass-panel">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h3 style="margin:0; font-size:1.2rem;">Σημερινό Πλάνο</h3>
@@ -282,7 +317,7 @@
         <div id="taskList" class="task-list"></div>
     </div>
 
-    <!-- 6. TIMER SIDEBAR (FOCUS MODE) -->
+    <!-- TIMER SIDEBAR (FOCUS MODE) -->
     <div id="timerSidebar" class="timer-sidebar glass-panel">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 30px;">
             <h2 style="margin:0; font-size:1.5rem;"><i class="fas fa-stopwatch" style="color:var(--accent);"></i> Focus Time</h2>
@@ -292,24 +327,24 @@
         <div id="timerMode" style="text-align:center; color:var(--accent); font-size:1rem; font-weight:700; margin-bottom:40px; letter-spacing:1px;">ΕΤΟΙΜΟΣ</div>
         <div style="display: flex; flex-direction: column; gap: 15px;">
             <div class="method-btn glass-panel" onclick="startTimer(25, 'POMODORO')">
-                <div><strong>Pomodoro</strong><span>25' Διάβασμα / 5' Διάλειμμα</span></div>
-                <i class="fas fa-play" style="color:var(--accent); font-size:1.2rem;"></i>
+                <div><strong>Pomodoro</strong><span>25' / 5' Break</span></div>
+                <i class="fas fa-play" style="color:var(--accent);"></i>
             </div>
             <div class="method-btn glass-panel" onclick="startTimer(50, 'DEEP WORK')">
-                <div><strong>Deep Work</strong><span>50' Διάβασμα / 10' Διάλειμμα</span></div>
-                <i class="fas fa-play" style="color:var(--accent); font-size:1.2rem;"></i>
+                <div><strong>Deep Work</strong><span>50' / 10' Break</span></div>
+                <i class="fas fa-play" style="color:var(--accent);"></i>
             </div>
         </div>
-        <button class="btn-main" style="background:#ff3b30; margin-top:30px; font-weight:600;" onclick="stopTimer()"><i class="fas fa-stop" style="margin-right:8px;"></i> Διακοπή (Zen Mode Off)</button>
+        <button class="btn-main" style="background:#ff3b30; margin-top:auto; font-weight:600;" onclick="stopTimer()"><i class="fas fa-stop" style="margin-right:8px;"></i> Διακοπή (Zen Mode Off)</button>
     </div>
 
-    <!-- 7. VIEWER -->
+    <!-- VIEWER -->
     <div class="viewer-overlay" id="viewerOverlay">
         <div class="viewer-header">
-            <button class="back-btn" onclick="closeViewer()"><i class="fas fa-chevron-down"></i> Κλείσιμο</button>
-            <div style="font-weight: 600; font-size:1.1rem;" id="viewerTitle">Φόρτωση...</div>
-            <div style="display:flex; gap:12px;">
-                <button class="back-btn" onclick="toggleTimerSidebar()" title="Χρονόμετρο"><i class="fas fa-stopwatch"></i> Focus</button>
+            <button class="back-btn" onclick="closeViewer()"><i class="fas fa-chevron-down"></i> <span style="font-size: 0.9rem;">Κλείσιμο</span></button>
+            <div style="font-weight: 600; font-size:1rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:40%;" id="viewerTitle">Φόρτωση...</div>
+            <div style="display:flex; gap:8px;">
+                <button class="back-btn" onclick="toggleTimerSidebar()" title="Χρονόμετρο"><i class="fas fa-stopwatch"></i> <span style="font-size: 0.9rem;">Focus</span></button>
                 <button class="back-btn" id="bookmarkBtn" onclick="toggleBookmark()" title="Αποθήκευση"><i class="fas fa-bookmark"></i></button>
             </div>
         </div>
@@ -318,23 +353,23 @@
         </div>
     </div>
 
-    <!-- 8. SPOTLIGHT SEARCH -->
+    <!-- SPOTLIGHT SEARCH -->
     <div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)">
         <div class="spotlight-box glass-panel" onclick="event.stopPropagation()">
-            <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Τι ψάχνεις να διαβάσεις;" autocomplete="off" oninput="performSpotlightSearch()">
+            <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Τι ψάχνεις;" autocomplete="off" oninput="performSpotlightSearch()">
             <div class="spotlight-results" id="spotlightResults"></div>
         </div>
     </div>
 
-    <!-- 9. SPACED REPETITION MODAL (ΝΕΟ) -->
+    <!-- SPACED REPETITION MODAL -->
     <div class="modal-bg" id="repModal">
         <div class="modal-box glass-panel">
-            <h2 style="margin-top:0; font-size:1.6rem;">Ολοκληρώθηκε! 🎉</h2>
-            <p class="text-muted" style="margin-bottom:25px; font-size:1.05rem;">Πώς σου φάνηκε το κουίζ;</p>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-                <button class="res-btn rep-btn-hard" onclick="saveRepetition('hard')">Δύσκολο 🔴 (Επανάληψη Αύριο)</button>
-                <button class="res-btn rep-btn-good" onclick="saveRepetition('good')">Καλό 🟡 (Επανάληψη σε 3 μέρες)</button>
-                <button class="res-btn rep-btn-easy" onclick="saveRepetition('easy')">Εύκολο 🟢 (Επανάληψη σε 7 μέρες)</button>
+            <h2 style="margin-top:0; font-size:1.4rem;">Ολοκληρώθηκε! 🎉</h2>
+            <p class="text-muted" style="margin-bottom:20px; font-size:1rem;">Πώς σου φάνηκε το κουίζ;</p>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <button class="res-btn rep-btn-hard" onclick="saveRepetition('hard')">Δύσκολο 🔴 (Αύριο)</button>
+                <button class="res-btn rep-btn-good" onclick="saveRepetition('good')">Καλό 🟡 (Σε 3 μέρες)</button>
+                <button class="res-btn rep-btn-easy" onclick="saveRepetition('easy')">Εύκολο 🟢 (Σε 7 μέρες)</button>
             </div>
         </div>
     </div>
@@ -351,7 +386,6 @@
         let currentSelectedChapter = null;
         let isAppInitialized = false;
 
-        // Στατικά Δεδομένα - Πρόσθεσα από 1 "Κεφάλαιο" στο καθένα για να μπορείς να τα πατάς και να τα βλέπεις!
         const subjectsData = [
             { id: 1, title: "Γενική Παθολογία & Παθολογική Ανατομική", icon: "fa-microscope", chapters: [ 
                 {id: 101, title: "Κεφάλαιο 1: Εισαγωγή", quiz: "pathology_q1.html"} 
@@ -396,25 +430,28 @@
             } catch(e){}
         }
 
+        // --- MOBILE MENU TOGGLE ---
+        function toggleMobileMenu() {
+            playSound('click');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            sidebar.classList.toggle('mobile-open');
+            if (sidebar.classList.contains('mobile-open')) {
+                overlay.style.display = 'block';
+                setTimeout(() => overlay.style.opacity = '1', 10);
+            } else {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.style.display = 'none', 300);
+            }
+        }
+
         // --- 2. AUTHENTICATION & INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                // Ελέγχουμε αν υπάρχει ήδη ενεργό session!
                 const { data: { session }, error } = await supabaseClient.auth.getSession();
-                
-                if (session) {
-                    // Αν υπάρχει session, παρακάμπτουμε την οθόνη φόρτωσης και μπαίνουμε αμέσως!
-                    initApp(session.user);
-                } else {
-                    // Διαφορετικά δείχνουμε το Lock Screen
-                    document.getElementById('initLoader').style.display = 'none';
-                    document.getElementById('loginScreen').classList.remove('hidden');
-                }
-            } catch(e) {
-                console.error("Σφάλμα σύνδεσης Supabase:", e);
-                document.getElementById('initLoader').style.display = 'none';
-                document.getElementById('loginScreen').classList.remove('hidden');
-            }
+                if (session) { initApp(session.user); } 
+                else { document.getElementById('initLoader').style.display = 'none'; document.getElementById('loginScreen').classList.remove('hidden'); }
+            } catch(e) { document.getElementById('initLoader').style.display = 'none'; document.getElementById('loginScreen').classList.remove('hidden'); }
 
             const savedTheme = localStorage.getItem('macTheme');
             if(savedTheme === 'light') { document.body.removeAttribute('data-theme'); document.getElementById('themeIcon').className = "fas fa-moon"; }
@@ -422,8 +459,7 @@
 
         async function handleAuth() {
             playSound('click');
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('pass').value;
+            const email = document.getElementById('email').value; const password = document.getElementById('pass').value;
             if(!email || !password) { document.getElementById('loginMsg').innerText = "Παρακαλώ συμπληρώστε τα πεδία."; return; }
             try {
                 if(isLoginMode) { const { error } = await supabaseClient.auth.signInWithPassword({ email, password }); if(error) throw error; } 
@@ -432,44 +468,29 @@
         }
 
         function toggleAuthMode() { 
-            isLoginMode = !isLoginMode; 
-            document.getElementById('authToggleText').innerText = isLoginMode ? "Χρειάζεσαι λογαριασμό;" : "Έχεις ήδη λογαριασμό;"; 
+            isLoginMode = !isLoginMode; document.getElementById('authToggleText').innerText = isLoginMode ? "Χρειάζεσαι λογαριασμό;" : "Έχεις ήδη λογαριασμό;"; 
             document.querySelector('.login-input-group + button').innerText = isLoginMode ? "Συνδεση" : "Εγγραφη";
         }
         async function logout() { playSound('click'); await supabaseClient.auth.signOut(); location.reload(); }
 
-        supabaseClient.auth.onAuthStateChange((event, session) => { 
-            if (session) initApp(session.user); 
-        });
+        supabaseClient.auth.onAuthStateChange((event, session) => { if (session) initApp(session.user); });
 
         async function initApp(user) {
-            if (isAppInitialized) return; // Για να μην ξανατρέξει 2 φορές αν είσαι ήδη logged in
-            isAppInitialized = true;
-
-            document.getElementById('initLoader').style.display = 'none';
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('sidebar').classList.remove('hidden');
-            document.getElementById('mainWrapper').classList.remove('hidden');
+            if (isAppInitialized) return; isAppInitialized = true;
+            document.getElementById('initLoader').style.display = 'none'; document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('sidebar').classList.remove('hidden'); document.getElementById('mainWrapper').classList.remove('hidden');
             
             try {
                 let { data, error } = await supabaseClient.from('profiles').select('*').eq('user_id', user.id).single();
                 if(error && error.code === 'PGRST116') {
-                    const { data: newProf } = await supabaseClient.from('profiles').insert([{ 
-                        user_id: user.id, streak: 0, bookmarks: [], tasks: [], stats: { quiz_scores: {}, repetition: {} }
-                    }]).select().single();
+                    const { data: newProf } = await supabaseClient.from('profiles').insert([{ user_id: user.id, streak: 0, bookmarks: [], tasks: [], stats: { quiz_scores: {}, repetition: {} } }]).select().single();
                     data = newProf;
                 }
                 dbData = data || { streak: 0, bookmarks: [], tasks: [], stats: { quiz_scores: {}, repetition: {} } };
-                if(!dbData.bookmarks) dbData.bookmarks = [];
-                if(!dbData.tasks) dbData.tasks = [];
-                if(!dbData.stats) dbData.stats = {};
-                if(!dbData.stats.quiz_scores) dbData.stats.quiz_scores = {};
-                if(!dbData.stats.repetition) dbData.stats.repetition = {};
-                
+                if(!dbData.bookmarks) dbData.bookmarks = []; if(!dbData.tasks) dbData.tasks = []; if(!dbData.stats) dbData.stats = {};
+                if(!dbData.stats.quiz_scores) dbData.stats.quiz_scores = {}; if(!dbData.stats.repetition) dbData.stats.repetition = {};
                 document.getElementById('menuStreak').innerText = dbData.streak || 0;
-                
-                renderSubjects();
-                renderTasks();
+                renderSubjects(); renderTasks();
             } catch(e) { console.error(e); renderSubjects(); }
         }
 
@@ -478,6 +499,10 @@
         // --- 3. UI TAB SWITCHING ---
         function switchTab(tabId, navId = '') {
             playSound('click');
+            // Αν είμαστε σε κινητό, κλείσε το μενού μόλις πατήσει μια επιλογή
+            const sidebar = document.getElementById('sidebar');
+            if(sidebar.classList.contains('mobile-open')) toggleMobileMenu();
+
             const sections = ['subjectsSection', 'chapterSection', 'quizHubSection', 'savedFilesSection'];
             sections.forEach(sec => document.getElementById(sec).style.display = 'none');
             document.getElementById(tabId).style.display = 'block';
@@ -488,8 +513,7 @@
         }
 
         function toggleDarkMode() {
-            playSound('click');
-            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            playSound('click'); const isDark = document.body.getAttribute('data-theme') === 'dark';
             if(isDark) { document.body.removeAttribute('data-theme'); document.getElementById('themeIcon').className = "fas fa-moon"; localStorage.setItem('macTheme', 'light'); } 
             else { document.body.setAttribute('data-theme', 'dark'); document.getElementById('themeIcon').className = "fas fa-sun"; localStorage.setItem('macTheme', 'dark'); }
         }
@@ -501,51 +525,31 @@
             grid.innerHTML = html;
         }
 
-        function getScoreBadge(chapterId) {
-            const score = dbData?.stats?.quiz_scores?.[chapterId];
-            if(score) return `<span class="score-badge">${score}</span>`;
-            return ''; 
-        }
+        function getScoreBadge(chapterId) { const score = dbData?.stats?.quiz_scores?.[chapterId]; if(score) return `<span class="score-badge">${score}</span>`; return ''; }
         function getRepetitionBadge(chapterId) {
-            const repDateStr = dbData?.stats?.repetition?.[chapterId];
-            if(!repDateStr) return '';
-            const repDate = new Date(repDateStr);
-            if(new Date() >= repDate) return `<span title="Χρειάζεται επανάληψη!" style="font-size:0.9rem;">🔴</span>`;
-            return '';
+            const repDateStr = dbData?.stats?.repetition?.[chapterId]; if(!repDateStr) return '';
+            const repDate = new Date(repDateStr); if(new Date() >= repDate) return `<span title="Χρειάζεται επανάληψη!" style="font-size:0.9rem;">🔴</span>`; return '';
         }
 
         function openSubject(id) {
             switchTab('chapterSection', 'nav-subjects');
-            const subject = subjectsData.find(s => s.id === id);
-            document.getElementById('chapterTitle').innerText = subject.title;
+            const subject = subjectsData.find(s => s.id === id); document.getElementById('chapterTitle').innerText = subject.title;
             const list = document.getElementById('chapterList'); list.innerHTML = '';
             if (subject.chapters.length === 0) { list.innerHTML = '<p class="text-muted" style="font-size:1.1rem;">Δεν υπάρχουν κουίζ ακόμα.</p>'; return; }
-            
             subject.chapters.forEach(ch => {
-                list.innerHTML += `
-                <div class="list-item glass-panel" onclick="openChapter(${ch.id}, '${ch.title}', '${ch.quiz}')">
-                    <div class="list-item-title"><i class="fas fa-brain" style="color:var(--accent);"></i> ${ch.title} ${getRepetitionBadge(ch.id)}</div>
-                    <div style="display:flex; align-items:center; gap:15px;">${getScoreBadge(ch.id)}<i class="fas fa-chevron-right" style="color:var(--text-muted); opacity:0.6;"></i></div>
-                </div>`;
+                list.innerHTML += `<div class="list-item glass-panel" onclick="openChapter(${ch.id}, '${ch.title}', '${ch.quiz}')"><div class="list-item-title"><i class="fas fa-brain" style="color:var(--accent);"></i> ${ch.title} ${getRepetitionBadge(ch.id)}</div><div style="display:flex; align-items:center; gap:15px;">${getScoreBadge(ch.id)}<i class="fas fa-chevron-right" style="color:var(--text-muted); opacity:0.6;"></i></div></div>`;
             });
         }
 
         function openChapter(id, title, quizUrl) {
-            if(!quizUrl) { alert("Δεν έχει προστεθεί αρχείο κουίζ."); return; }
-            playSound('click');
-            currentSelectedChapter = { id, title, quiz: quizUrl };
-            document.getElementById('viewerTitle').innerText = title + ' (Κουίζ)';
-            document.getElementById('contentFrame').src = quizUrl;
-            document.getElementById('viewerOverlay').style.display = 'flex';
-            
-            const btn = document.getElementById('bookmarkBtn');
-            if(dbData.bookmarks.includes(id)) btn.style.color = "var(--accent)"; else btn.style.color = "var(--text-main)";
+            if(!quizUrl) { alert("Δεν έχει προστεθεί αρχείο κουίζ."); return; } playSound('click');
+            currentSelectedChapter = { id, title, quiz: quizUrl }; document.getElementById('viewerTitle').innerText = title + ' (Κουίζ)';
+            document.getElementById('contentFrame').src = quizUrl; document.getElementById('viewerOverlay').style.display = 'flex';
+            const btn = document.getElementById('bookmarkBtn'); if(dbData.bookmarks.includes(id)) btn.style.color = "var(--accent)"; else btn.style.color = "var(--text-main)";
         }
 
         function closeViewer() {
-            playSound('click');
-            document.getElementById('viewerOverlay').style.display = 'none';
-            document.getElementById('contentFrame').src = '';
+            playSound('click'); document.getElementById('viewerOverlay').style.display = 'none'; document.getElementById('contentFrame').src = '';
             if(document.getElementById('chapterSection').style.display === 'block') { const sub = subjectsData.find(s => s.title === document.getElementById('chapterTitle').innerText); if(sub) openSubject(sub.id); }
             if(document.getElementById('quizHubSection').style.display === 'block') buildQuizHub();
             if(document.getElementById('savedFilesSection').style.display === 'block') buildSavedFiles();
@@ -556,35 +560,24 @@
             if (event.data && event.data.type === 'QUIZ_COMPLETED') {
                 const score = event.data.score; 
                 if (currentSelectedChapter && dbData) {
-                    if (!dbData.stats.quiz_scores) dbData.stats.quiz_scores = {};
-                    dbData.stats.quiz_scores[currentSelectedChapter.id] = score;
-                    sync();
-                    playSound('pop');
-                    document.getElementById('repModal').style.display = 'flex';
+                    if (!dbData.stats.quiz_scores) dbData.stats.quiz_scores = {}; dbData.stats.quiz_scores[currentSelectedChapter.id] = score; sync();
+                    playSound('pop'); document.getElementById('repModal').style.display = 'flex';
                 }
             }
         });
 
         function saveRepetition(difficulty) {
-            playSound('click');
-            if(!dbData.stats.repetition) dbData.stats.repetition = {};
-            let daysToAdd = (difficulty === 'hard') ? 1 : (difficulty === 'good' ? 3 : 7);
-            const nextDate = new Date(); nextDate.setDate(nextDate.getDate() + daysToAdd);
-            
-            dbData.stats.repetition[currentSelectedChapter.id] = nextDate.toISOString();
-            sync();
-            
-            document.getElementById('repModal').style.display = 'none';
-            closeViewer(); 
+            playSound('click'); if(!dbData.stats.repetition) dbData.stats.repetition = {};
+            let daysToAdd = (difficulty === 'hard') ? 1 : (difficulty === 'good' ? 3 : 7); const nextDate = new Date(); nextDate.setDate(nextDate.getDate() + daysToAdd);
+            dbData.stats.repetition[currentSelectedChapter.id] = nextDate.toISOString(); sync();
+            document.getElementById('repModal').style.display = 'none'; closeViewer(); 
         }
 
         // --- 6. BOOKMARKS & QUIZ HUB ---
         function toggleBookmark() {
-            if(!currentSelectedChapter) return; playSound('click');
-            const id = currentSelectedChapter.id; const btn = document.getElementById('bookmarkBtn');
+            if(!currentSelectedChapter) return; playSound('click'); const id = currentSelectedChapter.id; const btn = document.getElementById('bookmarkBtn');
             const idx = dbData.bookmarks.indexOf(id);
-            if(idx > -1) { dbData.bookmarks.splice(idx, 1); btn.style.color = "var(--text-main)"; } else { dbData.bookmarks.push(id); btn.style.color = "var(--accent)"; }
-            sync();
+            if(idx > -1) { dbData.bookmarks.splice(idx, 1); btn.style.color = "var(--text-main)"; } else { dbData.bookmarks.push(id); btn.style.color = "var(--accent)"; } sync();
         }
 
         function buildSavedFiles() {
@@ -593,12 +586,7 @@
             subjectsData.forEach(sub => {
                 sub.chapters.forEach(ch => {
                     if(dbData.bookmarks.includes(ch.id)) {
-                        container.innerHTML += `
-                        <div class="list-item glass-panel">
-                            <span style="flex:1; cursor:pointer; font-weight:500; font-size:1.05rem;" onclick="openChapter(${ch.id}, '${ch.title}', '${ch.quiz}')"><i class="fas fa-heart" style="color:var(--accent); margin-right:12px;"></i> ${ch.title} ${getRepetitionBadge(ch.id)}</span>
-                            ${getScoreBadge(ch.id)}
-                            <i class="fas fa-trash" style="color:#ff3b30; cursor:pointer; font-size:1.1rem; padding:5px; margin-left:15px;" onclick="removeBookmarkDirect(${ch.id})"></i>
-                        </div>`;
+                        container.innerHTML += `<div class="list-item glass-panel"><span style="flex:1; cursor:pointer; font-weight:500; font-size:1.05rem;" onclick="openChapter(${ch.id}, '${ch.title}', '${ch.quiz}')"><i class="fas fa-heart" style="color:var(--accent); margin-right:12px;"></i> ${ch.title} ${getRepetitionBadge(ch.id)}</span>${getScoreBadge(ch.id)}<i class="fas fa-trash" style="color:#ff3b30; cursor:pointer; font-size:1.1rem; padding:5px; margin-left:15px;" onclick="removeBookmarkDirect(${ch.id})"></i></div>`;
                     }
                 });
             });
@@ -623,9 +611,7 @@
         function renderTasks() {
             const list = document.getElementById('taskList'); list.innerHTML = '';
             if(!dbData.tasks.length) { list.innerHTML = '<p class="text-muted" style="font-size:0.95rem; margin-top:10px;">Κανένας στόχος για σήμερα.</p>'; return; }
-            dbData.tasks.forEach((t, i) => {
-                list.innerHTML += `<div class="task-item"><div class="task-checkbox ${t.done ? 'checked' : ''}" onclick="toggleTask(${i})"></div><span class="task-text ${t.done ? 'checked' : ''}">${t.text}</span><i class="fas fa-trash task-delete" onclick="deleteTask(${i})"></i></div>`;
-            });
+            dbData.tasks.forEach((t, i) => { list.innerHTML += `<div class="task-item"><div class="task-checkbox ${t.done ? 'checked' : ''}" onclick="toggleTask(${i})"></div><span class="task-text ${t.done ? 'checked' : ''}">${t.text}</span><i class="fas fa-trash task-delete" onclick="deleteTask(${i})"></i></div>`; });
         }
         function addTask() { const inp = document.getElementById('newTaskInput'); const txt = inp.value.trim(); if(txt) { playSound('pop'); dbData.tasks.push({text: txt, done: false}); inp.value=''; sync(); renderTasks(); } }
         function toggleTask(i) { playSound('pop'); dbData.tasks[i].done = !dbData.tasks[i].done; sync(); renderTasks(); }
@@ -636,10 +622,7 @@
         function startTimer(min, mode) { 
             playSound('click'); stopTimer(); document.getElementById('timerMode').innerText = mode; let sec = min * 60; updateTimeDisplay(sec); 
             document.body.classList.add('focus-active'); 
-            studyTimer = setInterval(() => { 
-                sec--; updateTimeDisplay(sec); 
-                if(sec <= 0) { stopTimer(); document.getElementById('alarmSound').play(); alert("Ο χρόνος τελείωσε! Κάνε ένα διάλειμμα."); } 
-            }, 1000); 
+            studyTimer = setInterval(() => { sec--; updateTimeDisplay(sec); if(sec <= 0) { stopTimer(); document.getElementById('alarmSound').play(); alert("Ο χρόνος τελείωσε! Κάνε ένα διάλειμμα."); } }, 1000); 
         }
         function stopTimer() { clearInterval(studyTimer); updateTimeDisplay(0); document.getElementById('timerMode').innerText = "ΕΤΟΙΜΟΣ"; document.body.classList.remove('focus-active'); }
         function updateTimeDisplay(sec) { const m = Math.floor(sec/60).toString().padStart(2,'0'); const s = (sec%60).toString().padStart(2,'0'); document.getElementById('timerDisplay').innerText = `${m}:${s}`; }
