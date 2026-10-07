@@ -497,6 +497,21 @@
 
         ];
 
+        // --- FIX: Υπολογισμός της σωστής επιλογής από το `answer` ---
+        // Τα δεδομένα του quiz αποθηκεύουν τη σωστή απάντηση ως κείμενο
+        // (`answer`) και όχι ως αριθμητικό index (`correctIndex`).
+        // Υπολογίζουμε αυτόματα το index ώστε η λογική του quiz να λειτουργεί σωστά.
+        quizData.forEach((q, index) => {
+            q.correctIndex = q.options.indexOf(q.answer);
+
+            if (q.correctIndex === -1) {
+                console.error(
+                    `Σφάλμα στην ερώτηση ${index + 1}: η σωστή απάντηση δεν βρέθηκε στις επιλογές.`,
+                    q
+                );
+            }
+        });
+
         // --- 2. STATE ---
         let currentQuestion = 0;
         let score = 0;
@@ -575,6 +590,12 @@
             userAnswers[currentQuestion] = selectedIndex;
 
             const q = quizData[currentQuestion];
+
+            if (q.correctIndex === -1 || q.correctIndex === undefined) {
+                console.error('Μη έγκυρη σωστή απάντηση για την ερώτηση:', q);
+                return;
+            }
+
             const allButtons = document.querySelectorAll('.option-btn');
             
             allButtons.forEach(btn => btn.style.pointerEvents = 'none');
